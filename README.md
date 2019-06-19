@@ -1,1 +1,1 @@
-# Odtwarzacz plikow dziewkowych
+# Odtwarzacz plikow audio
