@@ -47,6 +47,6 @@ public class Songs {
 
     @Override
     public String toString() {
-        return "Song [title=" + title + ", author=" + author + ", album=" + album + "]";
+        return "Mp3Song [title=" + title + ", author=" + author + ", album=" + album + "]";
     }
 }
