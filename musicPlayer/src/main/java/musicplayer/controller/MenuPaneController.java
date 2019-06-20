@@ -53,10 +53,10 @@ public class MenuPaneController {
             @Override
             public void handle(ActionEvent arg0) {
                 try {
-                    Parent parent = FXMLLoader.load(getClass().getResource("/pl/javastart/mp3player/view/AboutPane.fxml"));
+                    Parent parent = FXMLLoader.load(getClass().getResource("/main/resources/fxml/AboutPane.fxml"));
                     Scene scene = new Scene(parent);
                     Stage stage = new Stage();
-                    stage.setTitle("Mp3Player v1.0 - about");
+                    stage.setTitle("MusicPlayer v1.0 - about");
                     stage.setScene(scene);
                     stage.show();
                 } catch (IOException e) {

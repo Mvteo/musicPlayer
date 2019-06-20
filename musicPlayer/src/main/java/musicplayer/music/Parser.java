@@ -26,7 +26,7 @@ public class Parser {
         File[] files = dir.listFiles();
         for(File f: files) {
             String fileExtension = f.getName().substring(f.getName().lastIndexOf(".") + 1);
-            if(fileExtension.equals("mp3") || fileExtension.equals("wav"))
+            if(fileExtension.equals("mp3"))
                 songList.add(createSong(f));
         }
 
