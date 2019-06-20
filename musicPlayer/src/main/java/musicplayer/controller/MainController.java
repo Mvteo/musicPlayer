@@ -1,111 +1,129 @@
 package musicplayer.controller;
 
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import musicplayer.music.Parser;
 import musicplayer.music.Songs;
+import musicplayer.player.MusicPlayer;
+
+import java.io.File;
 
 public class MainController {
-
     @FXML
-    private MenuItem fileMenuItem;
-
+    private ContentPaneController contentPaneController;
     @FXML
-    private MenuItem dirMenuItem;
-
+    private ControlPaneController controlPaneController;
     @FXML
-    private MenuItem closeMenuItem;
+    private MenuPaneController menuPaneController;
 
-    @FXML
-    private MenuItem aboutMenuItem;
-
-    @FXML
-    private TableView<Songs> contentTable;
-
-    @FXML
-    private Button previousButton;
-
-    @FXML
-    private ToggleButton playButton;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    private Slider volumeSlider;
-
-    @FXML
-    private Slider progressSlider;
+    private MusicPlayer player;
 
     public void initialize() {
+        createPlayer();
+        configureTableClick();
         configureButtons();
-        configureVolume();
-        configureSliders();
-        configureTableColumns();
-        createTestData();
+        configureMenu();
     }
 
+    private void createPlayer() {
+        ObservableList<Songs> items = contentPaneController.getContentTable().getItems();
+        player = new MusicPlayer(items);
+    }
 
+    private void configureTableClick() {
+        TableView<Songs> contentTable = contentPaneController.getContentTable();
+        contentTable.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getClickCount() == 2) {
+                int selectedIndex = contentTable.getSelectionModel().getSelectedIndex();
+                playSelectedSong(selectedIndex);
+            }
+        });
+    }
 
-        private static final String TITLE_COLUMN = "Tytuł";
-        private static final String AUTHOR_COLUMN = "Autor";
-        private static final String ALBUM_COLUMN = "Album";
+    private void playSelectedSong(int selectedIndex) {
+        player.loadSong(selectedIndex);
+        configureProgressBar();
+        configureVolume();
+        controlPaneController.getPlayButton().setSelected(true);
+    }
 
+    private void configureProgressBar() {
+        Slider progressSlider = controlPaneController.getProgressSlider();
+        //ustawienie długości suwaka postępu
+        player.getMediaPlayer().setOnReady(() -> progressSlider.setMax(player.getLoadedSongLength()));
+        //zmiana czasu w odtwarzaczu automatycznie będzie aktualizowała suwak
+        player.getMediaPlayer().currentTimeProperty().addListener((arg, oldVal, newVal) ->
+                progressSlider.setValue(newVal.toSeconds()));
+        //przesunięcie suwaka spowoduje przewinięcie piosenki do wskazanego miejsca
+        progressSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(progressSlider.isValueChanging()) {
+                player.getMediaPlayer().seek(Duration.seconds(newValue.doubleValue()));
+            }
 
-
-
-        private void configureTableColumns() {
-            TableColumn<Songs, String> titleColumn = new TableColumn<Songs, String>(TITLE_COLUMN);
-            titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-
-            TableColumn<Songs, String> authorColumn = new TableColumn<Songs, String>(AUTHOR_COLUMN);
-            authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-
-            TableColumn<Songs, String> albumColumn = new TableColumn<Songs, String>(ALBUM_COLUMN);
-            albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
-
-            contentTable.getColumns().add(titleColumn);
-            contentTable.getColumns().add(authorColumn);
-            contentTable.getColumns().add(albumColumn);
-        }
-
-        private void createTestData() {
-            ObservableList<Songs> items = contentTable.getItems();
-            items.add(new Songs("a", "a", "a", "a"));
-            items.add(new Songs("b", "b", "b", "b"));
-            items.add(new Songs("c", "c", "c", "c"));
-            items.add(new Songs("d", "d", "d", "d"));
-        }
-
+        });
+    }
 
     private void configureVolume() {
-        volumeSlider.addEventFilter(MouseEvent.MOUSE_PRESSED, event ->
-                System.out.println("Wciśnięto przycisk na suwaku głośności")
-        );
-    }
-
-    private void configureSliders() {
-        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) ->
-                System.out.println("Zmiana głośności " + newValue.doubleValue())
-        );
-
-        progressSlider.valueProperty().addListener(x ->
-                System.out.println("Przesunięcie piosenki")
-        );
+        Slider volumeSlider = controlPaneController.getVolumeSlider();
+        volumeSlider.valueProperty().unbind();
+        volumeSlider.setMax(1.0);
+        volumeSlider.valueProperty().bindBidirectional(player.getMediaPlayer().volumeProperty());
     }
 
     private void configureButtons() {
-        previousButton.setOnAction(event -> System.out.println("Poprzednia piosenka"));
-        nextButton.setOnAction(x -> System.out.println("Następna piosenka"));
+        TableView<Songs> contentTable = contentPaneController.getContentTable();
+        ToggleButton playButton = controlPaneController.getPlayButton();
+        Button prevButton = controlPaneController.getPreviousButton();
+        Button nextButton = controlPaneController.getNextButton();
+
         playButton.setOnAction(event -> {
-            if(playButton.isSelected()) {
-                System.out.println("Play");
+            if (playButton.isSelected()) {
+                player.play();
             } else {
-                System.out.println("Stop");
+                player.stop();
+            }
+        });
+
+        nextButton.setOnAction(event -> {
+            contentTable.getSelectionModel().select(contentTable.getSelectionModel().getSelectedIndex() + 1);
+            playSelectedSong(contentTable.getSelectionModel().getSelectedIndex());
+        });
+
+        prevButton.setOnAction(event -> {
+            contentTable.getSelectionModel().select(contentTable.getSelectionModel().getSelectedIndex() - 1);
+            playSelectedSong(contentTable.getSelectionModel().getSelectedIndex());
+        });
+    }
+
+    private void configureMenu() {
+        MenuItem openFile = menuPaneController.getFileMenuItem();
+        MenuItem openDir = menuPaneController.getDirMenuItem();
+
+        openFile.setOnAction(event -> {
+            FileChooser fc = new FileChooser();
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Mp3","Wav","*.wav", "*.mp3"));
+            File file = fc.showOpenDialog(new Stage());
+            try {
+                contentPaneController.getContentTable().getItems().add(Parser.createSong(file));
+            } catch (Exception e) {
+                e.printStackTrace(); //ignore
+            }
+        });
+
+        openDir.setOnAction(event -> {
+            DirectoryChooser dc = new DirectoryChooser();
+            File dir = dc.showDialog(new Stage());
+            try {
+                contentPaneController.getContentTable().getItems().addAll(Parser.createList(dir));
+            } catch (Exception e) {
+                e.printStackTrace(); //ignore
             }
         });
     }
