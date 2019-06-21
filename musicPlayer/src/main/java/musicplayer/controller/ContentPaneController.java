@@ -4,8 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import musicplayer.music.Songs;
+import musicplayer.music.Song;
 
+/**
+ * Klasa kontrolera głównego panela
+ *
+ * W tym panelu wyświetlane są załadowane piosenki
+ */
 public class ContentPaneController {
 
     private static final String TITLE_COLUMN = "Tytuł";
@@ -13,24 +18,37 @@ public class ContentPaneController {
     private static final String ALBUM_COLUMN = "Album";
 
     @FXML
-    private TableView<Songs> contentTable;
+    /**
+     * Tablica piosenek
+     */
+    private TableView<Song> contentTable;
 
-    public TableView<Songs> getContentTable() {
+    /**
+     * Metoda zwracająca tablice
+     * @return tablica wyświetlana w odtwarzaczu
+     */
+    public TableView<Song> getContentTable() {
         return contentTable;
     }
 
+    /**
+     * Metoda urchamiająca pozostałe metody
+     */
     public void initialize() {
         configureTableColumns();
     }
 
+    /**
+     * Metoda dzieląca panel głowny na 3 tabele: tytuł, autora, album
+     */
     private void configureTableColumns() {
-        TableColumn<Songs, String> titleColumn = new TableColumn<>(TITLE_COLUMN);
+        TableColumn<Song, String> titleColumn = new TableColumn<>(TITLE_COLUMN);
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<Songs, String> authorColumn = new TableColumn<>(AUTHOR_COLUMN);
+        TableColumn<Song, String> authorColumn = new TableColumn<>(AUTHOR_COLUMN);
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
 
-        TableColumn<Songs, String> albumColumn = new TableColumn<>(ALBUM_COLUMN);
+        TableColumn<Song, String> albumColumn = new TableColumn<>(ALBUM_COLUMN);
         albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
 
         contentTable.getColumns().add(titleColumn);

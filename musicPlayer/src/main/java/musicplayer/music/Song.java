@@ -1,12 +1,25 @@
 package musicplayer.music;
 
-public class Songs {
+/**
+ * Klasa tworzaca obiekty Song
+ *
+ * Są one obsługiwane przez klase MusicPlayer z tych obiektów możemy pozyskać takie informacje jak:
+ * ścierzka pliku, tytuł piosenki, autora piosenki, album
+ */
+public class Song {
     private String title;
     private String author;
     private String album;
     private String filePath;
 
-    public Songs(String title, String author, String album, String filePath) {
+    /**
+     * Konstruktor Song
+     * @param title Tytuł utworu
+     * @param author Autor utworu
+     * @param album Album
+     * @param filePath ścieżka pliku
+     */
+    public Song(String title, String author, String album, String filePath) {
         this.title = title;
         this.author = author;
         this.album = album;

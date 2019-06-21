@@ -10,21 +10,43 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import musicplayer.music.Parser;
-import musicplayer.music.Songs;
+import musicplayer.music.Song;
 import musicplayer.player.MusicPlayer;
 
 import java.io.File;
 
+/**
+ * Klasa kontrolera głownego
+ *
+ * Klasa łącząca kontrolery menu,przycisków oraz panelu głównego oraz posiadająca głowne metody do obsługi odtwarzacza
+ */
 public class MainController {
     @FXML
+    /**
+     * Zmienna kontrolera panelu głownego
+     */
     private ContentPaneController contentPaneController;
     @FXML
+    /**
+     * Zmienna kontrolera panelu kontrolnego
+     */
     private ControlPaneController controlPaneController;
     @FXML
+    /**
+     * Zmienna kontrolera panelu menu
+     */
     private MenuPaneController menuPaneController;
 
+    /**
+     * Odtwarzacz muzyki
+     *
+     * On obsługuje pliki dźwiękowe
+     */
     private MusicPlayer player;
 
+    /**
+     * Metoda uruchamiająca pozostałe metody
+     */
     public void initialize() {
         createPlayer();
         configureTableClick();
@@ -32,13 +54,19 @@ public class MainController {
         configureMenu();
     }
 
+    /**
+     * Metoda tworząca player
+     */
     private void createPlayer() {
-        ObservableList<Songs> items = contentPaneController.getContentTable().getItems();
+        ObservableList<Song> items = contentPaneController.getContentTable().getItems();
         player = new MusicPlayer(items);
     }
 
+    /**
+     * Metoda obsługująca zdarzenia kliknięcia myszką na tabelach
+     */
     private void configureTableClick() {
-        TableView<Songs> contentTable = contentPaneController.getContentTable();
+        TableView<Song> contentTable = contentPaneController.getContentTable();
         contentTable.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getClickCount() == 2) {
                 int selectedIndex = contentTable.getSelectionModel().getSelectedIndex();
@@ -47,6 +75,11 @@ public class MainController {
         });
     }
 
+    /**
+     * Metoda odtwarzająca wybraną piosenkę
+     *
+     * @param selectedIndex wskaźnik na wybraną aktualnie piosenkę
+     */
     private void playSelectedSong(int selectedIndex) {
         player.loadSong(selectedIndex);
         configureProgressBar();
@@ -54,14 +87,16 @@ public class MainController {
         controlPaneController.getPlayButton().setSelected(true);
     }
 
+    /**
+     * Metoda do obsługi suwaka progresu piosenki
+     *
+     * Pozwala przesuwać piosenkę do wybranego momentu
+     */
     private void configureProgressBar() {
         Slider progressSlider = controlPaneController.getProgressSlider();
-        //ustawienie długości suwaka postępu
         player.getMediaPlayer().setOnReady(() -> progressSlider.setMax(player.getLoadedSongLength()));
-        //zmiana czasu w odtwarzaczu automatycznie będzie aktualizowała suwak
         player.getMediaPlayer().currentTimeProperty().addListener((arg, oldVal, newVal) ->
                 progressSlider.setValue(newVal.toSeconds()));
-        //przesunięcie suwaka spowoduje przewinięcie piosenki do wskazanego miejsca
         progressSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             if(progressSlider.isValueChanging()) {
                 player.getMediaPlayer().seek(Duration.seconds(newValue.doubleValue()));
@@ -70,6 +105,9 @@ public class MainController {
         });
     }
 
+    /**
+     * Metoda obsługująca poziom głośności
+     */
     private void configureVolume() {
         Slider volumeSlider = controlPaneController.getVolumeSlider();
         volumeSlider.valueProperty().unbind();
@@ -77,8 +115,15 @@ public class MainController {
         volumeSlider.valueProperty().bindBidirectional(player.getMediaPlayer().volumeProperty());
     }
 
+    /**
+     * Metoda obsługująca przyciski
+     *
+     * Po kliknięciu prevButtona wybieramy poprzednią piosenkę
+     * Po kliknięciu playButton włączamy piosenke lub wstrzymujemy
+     * Po kliknięciu nextButton wybieramy następną piosenkę
+     */
     private void configureButtons() {
-        TableView<Songs> contentTable = contentPaneController.getContentTable();
+        TableView<Song> contentTable = contentPaneController.getContentTable();
         ToggleButton playButton = controlPaneController.getPlayButton();
         Button prevButton = controlPaneController.getPreviousButton();
         Button nextButton = controlPaneController.getNextButton();
@@ -102,6 +147,11 @@ public class MainController {
         });
     }
 
+    /**
+     * Metoda obsługująca menu
+     *
+     * Obsługuje opcje załadowania pojedyńczej piosenki lub pobrania listy piosenek z danego folderu
+     */
     private void configureMenu() {
         MenuItem openFile = menuPaneController.getFileMenuItem();
         MenuItem openDir = menuPaneController.getDirMenuItem();
@@ -130,6 +180,11 @@ public class MainController {
         });
     }
 
+    /**
+     * Metoda wyświetlająca daną wiadomość na dolnym pasku
+     *
+     * @param message wiadomość która ma być wyświetlona
+     */
     private void showMessage(String message) {
         controlPaneController.getMessageTextField().setText(message);
     }

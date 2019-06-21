@@ -13,39 +13,75 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Klasa kontrolera menu
+ *
+ * Odpowiada za obsługę przycisków menu
+ */
 public class MenuPaneController {
     @FXML
+    /**
+     * Zmienna menu uruchamiająca ładowanie pojedyńczej piosenki
+     */
     private MenuItem fileMenuItem;
 
     @FXML
+    /**
+     * Zmienna menu uruchamiająca ładowanie piosenkek z folderu
+     */
     private MenuItem dirMenuItem;
 
     @FXML
+    /**
+     * Zmienna menu wyłączająca odtwarzacz
+     */
     private MenuItem closeMenuItem;
 
     @FXML
+    /**
+     * Zmienna menu wyświetlająca okienko z informacjami
+     */
     private MenuItem aboutMenuItem;
 
+    /**
+     * Metoda zwracająca opcje menu
+     * @return zwraca opcje
+     */
     public MenuItem getFileMenuItem() {
         return fileMenuItem;
     }
-
+    /**
+     * Metoda zwracająca opcje menu
+     * @return zwraca opcje
+     */
     public MenuItem getDirMenuItem() {
         return dirMenuItem;
     }
-
+    /**
+     * Metoda zwracająca opcje menu
+     * @return zwraca opcje
+     */
     public MenuItem getCloseMenuItem() {
         return closeMenuItem;
     }
-
+    /**
+     * Metoda zwracająca opcje menu
+     * @return zwraca opcje
+     */
     public MenuItem getAboutMenuItem() {
         return aboutMenuItem;
     }
 
+    /**
+     * Metoda uruchamiająca pozostałe metody
+     */
     public void initialize() {
         configureMenu();
     }
 
+    /**
+     * Metoda obsługująca wyświetlenie okna "MusicPlayer v1.0 - about"
+     */
     private void configureMenu() {
         closeMenuItem.setOnAction(x -> Platform.exit());
 
