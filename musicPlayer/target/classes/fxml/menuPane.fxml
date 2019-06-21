@@ -10,7 +10,7 @@
     <MenuBar AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
              AnchorPane.topAnchor="0.0">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem fx:id="fileMenuItem" mnemonicParsing="false" text="Open Mp3 File"/>
+            <MenuItem fx:id="fileMenuItem" mnemonicParsing="false" text="Open Music File"/>
             <MenuItem fx:id="dirMenuItem" mnemonicParsing="false" text="Open directory"/>
             <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" text="Close"/>
         </Menu>

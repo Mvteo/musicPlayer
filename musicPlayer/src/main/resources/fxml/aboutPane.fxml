@@ -6,14 +6,11 @@
             xmlns="http://javafx.com/javafx/10.0.1">
     <children>
         <TextArea editable="false" prefHeight="200.0" prefWidth="200.0"
-                  text="
-Program Mp3Player stworzony w kursie JavaStart.pl
+                  text="Program Music Player
 
 &#10;Wersja programu v1.0
-
-&#10;Wykorzystane biblioteki:
-
-&#10;http://javamusictag.sourceforge.net/"
+&#10;Autor: Mateusz Wojcik 2ID13B
+"
                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
