@@ -1,15 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="musicplayer.controller.MainController"
-            stylesheets="@../css/style.css" >
+<BorderPane prefHeight="480.0" prefWidth="640.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="musicplayer.controller.MainController">
     <top>
-        <fx:include fx:id="menuPane" source="menuPane.fxml"/>
+        <fx:include fx:id="menuPane" source="menuPane.fxml" />
     </top>
     <center>
-        <fx:include fx:id="contentPane" source="contentPane.fxml"/>
+        <fx:include fx:id="contentPane" source="contentPane.fxml" />
     </center>
     <bottom>
-        <fx:include fx:id="controlPane" source="controlPane.fxml"/>
+        <fx:include fx:id="controlPane" source="controlPane.fxml" />
     </bottom>
 </BorderPane>

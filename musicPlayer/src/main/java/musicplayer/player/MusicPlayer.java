@@ -18,7 +18,7 @@ public class MusicPlayer {
     private MediaPlayer mediaPlayer;
 
     /**
-     * Konstruktor klasy ładująca piosenki do odtwarzacza
+     * Konstruktor klasy ładujący piosenki do odtwarzacza
      * @param songList lista piosenek
      */
     public MusicPlayer(ObservableList<Song> songList) {
@@ -26,8 +26,8 @@ public class MusicPlayer {
     }
 
     /**
-     * Metoda zwracająca music playera
-     * @return zwraca music playera
+     * Metoda zwracająca media playera
+     * @return media playera
      */
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;

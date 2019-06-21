@@ -1,0 +1,5 @@
+module:musicplayer
+musicplayer.controller
+musicplayer.main
+musicplayer.music
+musicplayer.player

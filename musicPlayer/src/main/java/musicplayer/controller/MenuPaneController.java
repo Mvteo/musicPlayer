@@ -45,28 +45,28 @@ public class MenuPaneController {
 
     /**
      * Metoda zwracająca opcje menu
-     * @return zwraca opcje
+     * @return opcje
      */
     public MenuItem getFileMenuItem() {
         return fileMenuItem;
     }
     /**
      * Metoda zwracająca opcje menu
-     * @return zwraca opcje
+     * @return opcje
      */
     public MenuItem getDirMenuItem() {
         return dirMenuItem;
     }
     /**
      * Metoda zwracająca opcje menu
-     * @return zwraca opcje
+     * @return opcje
      */
     public MenuItem getCloseMenuItem() {
         return closeMenuItem;
     }
     /**
      * Metoda zwracająca opcje menu
-     * @return zwraca opcje
+     * @return opcje
      */
     public MenuItem getAboutMenuItem() {
         return aboutMenuItem;

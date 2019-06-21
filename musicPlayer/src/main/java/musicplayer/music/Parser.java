@@ -16,10 +16,10 @@ public class Parser {
 
 
     /**
-     * Metoda dodająca pojedyńczą piosenke do odtwarzacza
+     * Metoda dodająca pojedynczą piosenke do odtwarzacza
      *
      * @param file wybrany przez nas plik
-     * @return zwraca obiekt klasy Song który jest obslugiwany przez klase MusicPlayer
+     * @return obiekt klasy Song który jest obslugiwany przez klase MusicPlayer
      * @throws IOException jest zwracany gdy nie powiedzie się obsługa plików
      * @throws TagException jest zwracany gdy nie powiedzie się obsługa tagów plików mp3
      */
@@ -42,7 +42,7 @@ public class Parser {
     /**
      * Klasa ładująca wszystkie pliki audio z folderu
      * @param dir jako parametr przekazujemy folder
-     * @return  zwracamy liste obiektów klasy Song którą obsłuży klasa MusicPlayer
+     * @return lista obiektów klasy Song którą obsłuży klasa MusicPlayer
      * @throws IOException jest zwracany gdy nie powiedzie się obsługa plików
      * @throws TagException jest zwracany gdy nie powiedzie się obsługa tagów plików mp3
      */
