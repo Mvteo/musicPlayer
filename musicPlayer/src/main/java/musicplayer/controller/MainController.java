@@ -108,8 +108,7 @@ public class MainController {
 
         openFile.setOnAction(event -> {
             FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Mp3", "*.mp3"));
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Wav", "*.wav"));
+           // fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Mp3", "*.mp3"));
             File file = fc.showOpenDialog(new Stage());
             try {
                 contentPaneController.getContentTable().getItems().add(Parser.createSong(file));
